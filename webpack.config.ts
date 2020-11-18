@@ -20,20 +20,20 @@ const resolve = (...dirs: string[]) => path.resolve(__dirname, ...dirs);
 const statsConfig = () =>
   devMode
     ? {
-        all: false,
-        assets: true,
-        cached: true,
-        colors: true,
-        hash: true,
-        builtAt: true,
-        timings: true,
-        errors: true,
-        errorDetails: true,
-        logging: 'info',
-        warnings: true,
-        version: true,
-        context: resolve('src'),
-      }
+      all: false,
+      assets: true,
+      cached: true,
+      colors: true,
+      hash: true,
+      builtAt: true,
+      timings: true,
+      errors: true,
+      errorDetails: true,
+      logging: 'info',
+      warnings: true,
+      version: true,
+      context: resolve('src'),
+    }
     : { preset: 'normal' };
 
 // not used in an SPA, uncomment for traditional multi-page app
@@ -143,44 +143,44 @@ export default <Configuration>{
     ...(devMode
       ? []
       : [
-          new MiniCSSExtractPlugin({
-            filename: devMode ? '[name].css' : '[name].[contenthash].css',
-            chunkFilename: devMode ? '[name].css' : '[name].[contenthash].css',
-            esModule: true,
-          }),
-          new OptimzeCSSAssetsPlugin(),
-        ]),
+        new MiniCSSExtractPlugin({
+          filename: devMode ? '[name].css' : '[name].[contenthash].css',
+          chunkFilename: devMode ? '[name].css' : '[name].[contenthash].css',
+          esModule: true,
+        }),
+        new OptimzeCSSAssetsPlugin(),
+      ]),
   ],
   optimization: devMode
     ? {
-        runtimeChunk: 'single',
-        minimize: false,
-        removeAvailableModules: false,
-        removeEmptyChunks: false,
-        splitChunks: false,
-      }
+      runtimeChunk: 'single',
+      minimize: false,
+      removeAvailableModules: false,
+      removeEmptyChunks: false,
+      splitChunks: false,
+    }
     : {
-        minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            test: /\.(j|t)sx?$/i,
-            extractComments: false,
-          }),
-        ],
-        splitChunks: {
-          chunks: 'all',
-          cacheGroups: {
-            gamelib: {
-              test: /[\\/]node_modules[\\/](pixi-js|@pixi\/.+)[\\/]/,
-              chunks: 'all',
-              priority: 5,
-            },
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          test: /\.(j|t)sx?$/i,
+          extractComments: false,
+        }),
+      ],
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          gamelib: {
+            test: /[\\/]node_modules[\\/](pixi-js|@pixi\/.+)[\\/]/,
+            chunks: 'all',
+            priority: 5,
           },
         },
       },
+    },
   module: {
     rules: [
-      { test: /\.(jpe?g|png|gif|mp3|ttf|eot|woff)$/i, loader: 'file-loader' },
+      { test: /\.(jpe?g|png|gif|mp3|ttf|eot|woff|mp3)$/i, loader: 'file-loader' },
       { test: /\.jsx?$/i, enforce: 'pre', loader: 'source-map-loader' },
       { test: /\.tsx?$/i, loader: 'ts-loader' },
       {
@@ -190,7 +190,7 @@ export default <Configuration>{
           { loader: 'css-loader', options: { sourceMap: true } },
           {
             loader: 'postcss-loader',
-            options: { sourceMap: true, postcssOptions: { plugins: [autoprefixer()] } },
+            options: { sourceMap: true, postcssOptions: { plugins: [autoprefixer(), require('tailwindcss')] } },
           },
           {
             loader: 'sass-loader',
